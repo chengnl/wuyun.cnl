@@ -9,15 +9,14 @@ go语言对象池
 
 ## 1、实现对象创建工厂
 实现对象创建工厂PoolObjectFactoryer接口,该工厂实现以下接口方法：
-
-     ```
-	//创建对象
-	CreateObj() (interface{}, error)
-	//销毁对象
-	DestroyObj(interface{}) error
-	//验证对象
-	ValidateObj(interface{}) error
-     ```
+```
+//创建对象
+CreateObj() (interface{}, error)
+//销毁对象
+DestroyObj(interface{}) error
+//验证对象
+ValidateObj(interface{}) error
+```
 ## 2、对象池参数设置
 提供连接池参数设置，参数设置如下：
 
