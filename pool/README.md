@@ -38,20 +38,20 @@ type PoolConfig struct {
 创建配置项示例：
 
 ```
-config := &PoolConfig{MAX_ACTIVE: 100, MAX_IDLE: 50, MIN_IDLE: 5, MAX_WAIT: 60 * time.Millisecond, IsVaildObj: true}
+config := &pool.PoolConfig{MAX_ACTIVE: 100, MAX_IDLE: 50, MIN_IDLE: 5, MAX_WAIT: 60 * time.Millisecond, IsVaildObj: true}
 ```
 
 ## 3、对象池创建
 对象池创建，默认不给参数配置方式：
 ```
-pool, err := DefaultGenObjectPool(NewFactory())
+pool, err := pool.DefaultGenObjectPool(NewFactory())
 ```
 此方式，默认MAX_ACTIVE和MAX_IDLE为5，MIN_IDLE为0，MAX_WAIT为-1一直等待对象返回，IsVaildObj为false，不检测对象有效性
 
 提供参数配置方式：
 ```
-config := &PoolConfig{MAX_ACTIVE: 100, MAX_IDLE: 50, MIN_IDLE: 5, MAX_WAIT: 60 * time.Millisecond, IsVaildObj: true}
-pool, err := NewGenObjectPool(NewFactory(), config)
+config := &pool.PoolConfig{MAX_ACTIVE: 100, MAX_IDLE: 50, MIN_IDLE: 5, MAX_WAIT: 60 * time.Millisecond, IsVaildObj: true}
+pool, err := pool.NewGenObjectPool(NewFactory(), config)
 ```
 
 ## 4、对象池使用
@@ -87,6 +87,8 @@ pool.GetNumActive()
 ```
 # 完整示例
 ```
+
+
 ```
 
 注：
