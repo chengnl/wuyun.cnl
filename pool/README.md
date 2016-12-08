@@ -86,10 +86,11 @@ pool.GetNumIdle()
 pool.GetNumActive()
 ```
 # 完整示例
-```
+参考example目录的示例
+使用：
+先下载：go get github.com/chengnl/wuyun.cnl/pool/
 
-
-```
+使用引入：import "github.com/chengnl/wuyun.cnl/pool"
 
 注：
 参考借鉴[https://github.com/fatih/pool](https://github.com/fatih/pool)，实现更加通用的对象池
