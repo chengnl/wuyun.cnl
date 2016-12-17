@@ -55,4 +55,5 @@ consistenthash.GetNode(内容参数)
 
 注：
 使用数据结构redblacktree[https://github.com/emirpasic/gods/trees/redblacktree](https://github.com/emirpasic/gods/trees/redblacktree)
+
 参看文档一致hash[http://blog.csdn.net/cywosp/article/details/23397179/](http://blog.csdn.net/cywosp/article/details/23397179/)

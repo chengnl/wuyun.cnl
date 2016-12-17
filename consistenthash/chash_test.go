@@ -168,4 +168,7 @@ func TestHFunc(t *testing.T) {
 	fmt.Println(chash.GetNode("test2222"))
 	fmt.Println(chash.GetNode("987678fdasfdsa"))
 	fmt.Println(chash.GetNode("9999"))
+
+	server := chash.GetNode("9999")
+	fmt.Println(server.(Server).name)
 }
