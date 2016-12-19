@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var POOL_IS_FULL = "POOL_FULL"
+var POOLFULL error = errors.New("pool is full")
 
 type genObjectPool struct {
 	config    *PoolConfig
@@ -71,7 +71,7 @@ func (p *genObjectPool) GetObject() (interface{}, error) {
 		default:
 			poolObj, err := p.createObject()
 			if poolObj == nil {
-				if err != nil && err.Error() == POOL_IS_FULL {
+				if err != nil && err == POOLFULL {
 					select {
 					case <-time.After(waitTime):
 						return nil, errors.New("Timeout waiting for idle object")
@@ -146,7 +146,7 @@ func (p *genObjectPool) createObject() (interface{}, error) {
 	num := atomic.AddInt64(&p.objNum, 1)
 	if num > int64(p.config.MAX_ACTIVE) || num > int64(math.MaxInt32) {
 		atomic.AddInt64(&p.objNum, -1)
-		return nil, errors.New(POOL_IS_FULL)
+		return nil, POOLFULL
 	}
 	poolObj, err := p.factory.CreateObj()
 	if err != nil {
