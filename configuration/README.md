@@ -30,6 +30,13 @@ int支持int，int8,int16,int32,int64；uint8,uint16,uint32,uint64;
 intVal, intErr := configuration.GetInt("int8", 10, 8)
 
 ```
+缺省值获取方式：
+
+```
+intVal, intErr := configuration.GetIntDefaultVal("int8", 10, 8,56)
+
+```
+
 
 # 完整示例
 参考config_test.go的示例
@@ -39,3 +46,14 @@ intVal, intErr := configuration.GetInt("int8", 10, 8)
 先下载：go get github.com/chengnl/wuyun.cnl/configuration/
 
 使用引入：import "github.com/chengnl/wuyun.cnl/configuration"
+
+#配置文件格式
+
+注释使用#或者!开头，例如：
+```
+#键值对说明
+```
+键值对使用=或者:赋值，例如：
+```
+key=value
+```

@@ -6,3 +6,6 @@
 
 ## 一致hash算法-consistenthash
   目录consistenthash，提供一致性hash算法工具包
+
+## configuration
+  目录configuration，提供配置文件读取工具包
