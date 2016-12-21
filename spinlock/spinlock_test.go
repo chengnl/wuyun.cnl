@@ -1,4 +1,4 @@
-package spin
+package spinlock
 
 import (
 	"sync"
@@ -13,13 +13,13 @@ type SpinMap struct {
 func (sm *SpinMap) Add(i int) {
 	sm.Lock()
 	sm.m[i] = true
-	sm.UnLock()
+	sm.Unlock()
 }
 
 func (sm *SpinMap) Get(i int) (b bool) {
 	sm.Lock()
 	b = sm.m[i]
-	sm.UnLock()
+	sm.Unlock()
 	return
 }
 
