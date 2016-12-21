@@ -43,9 +43,8 @@ func TestSnowflake_concurrent(t *testing.T) {
 	}
 	wg.Wait()
 	fmt.Println(time.Since(startTime).Nanoseconds() / 1e6)
-
 	//     fmt.Println(int64(6217313433218585064>>22))
-//     fmt.Println(int64(6217313433218585064&(1<<12-1)))
-//     fmt.Println(int64(6217313433222778880>>22))
-//     fmt.Println(int64(6217313433222778880&(1<<12-1)))
+	//     fmt.Println(int64(6217313433218585064&(1<<12-1)))
+	//     fmt.Println(int64(6217313433222778880>>22))
+	//     fmt.Println(int64(6217313433222778880&(1<<12-1)))
 }
