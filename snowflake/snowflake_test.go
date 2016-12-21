@@ -2,7 +2,7 @@ package snowflake
 
 import (
 	"fmt"
-	"log"
+	"runtime"
 	"sync"
 	"testing"
 	"time"
@@ -14,8 +14,8 @@ func TestSnowflake(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		for i := 0; i < 10000000; i++ {
-			s.GetSeqID()
+		for i := 0; i < 10000; i++ {
+			fmt.Println(s.GetSeqID())
 		}
 
 	}
@@ -23,6 +23,7 @@ func TestSnowflake(t *testing.T) {
 }
 
 func TestSnowflake_concurrent(t *testing.T) {
+	runtime.GOMAXPROCS(4)
 	s, err := Snowflake(1, 1)
 	var wg sync.WaitGroup
 	startTime := time.Now()
@@ -33,10 +34,6 @@ func TestSnowflake_concurrent(t *testing.T) {
 			wg.Add(1)
 			go func() {
 				for j := 0; j < 1000; j++ {
-					m, err := fmt.Println("111")
-					if err != nil {
-						log.Fatalf("fmt err %d %v", m, err)
-					}
 					s.GetSeqID()
 				}
 				wg.Done()
@@ -46,4 +43,9 @@ func TestSnowflake_concurrent(t *testing.T) {
 	}
 	wg.Wait()
 	fmt.Println(time.Since(startTime).Nanoseconds() / 1e6)
+
+	//     fmt.Println(int64(6217313433218585064>>22))
+//     fmt.Println(int64(6217313433218585064&(1<<12-1)))
+//     fmt.Println(int64(6217313433222778880>>22))
+//     fmt.Println(int64(6217313433222778880&(1<<12-1)))
 }

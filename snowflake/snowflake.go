@@ -3,8 +3,9 @@ package snowflake
 import (
 	"errors"
 	"fmt"
-	"sync"
 	"time"
+
+	"github.com/chengnl/wuyun.cnl/spinlock"
 )
 
 const seqBit uint = 12                             //序列位数
@@ -25,8 +26,8 @@ type SnowFlake struct {
 	lastTimeStamp int64
 	_dataCenterID int64
 	_workID       int64
-	lock          sync.Mutex
-	//lock          spinlock.SpinLock //使用自旋锁，并发获取效率高
+	//lock          sync.Mutex
+	lock spinlock.SpinLock //使用自旋锁，并发获取效率高
 }
 
 func Snowflake(dataCenterID int64, workID int64) (*SnowFlake, error) {
