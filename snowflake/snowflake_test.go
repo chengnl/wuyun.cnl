@@ -24,6 +24,7 @@ func TestSnowflake(t *testing.T) {
 
 func TestSnowflake_concurrent(t *testing.T) {
 	runtime.GOMAXPROCS(4)
+	ids := make(map[int64]int64)
 	s, err := Snowflake(1, 1)
 	var wg sync.WaitGroup
 	startTime := time.Now()
@@ -34,7 +35,13 @@ func TestSnowflake_concurrent(t *testing.T) {
 			wg.Add(1)
 			go func() {
 				for j := 0; j < 1000; j++ {
-					s.GetSeqID()
+					id, err := s.GetSeqID()
+					if err != nil {
+						continue
+					}
+					if v, ok := ids[id]; ok {
+						fmt.Printf("发现重复值：%d\n", v)
+					}
 				}
 				wg.Done()
 			}()
