@@ -54,6 +54,6 @@ consistenthash.GetNode(内容参数)
 使用引入：import "github.com/chengnl/wuyun.cnl/consistenthash"
 
 注：
-使用数据结构redblacktree[https://github.com/emirpasic/gods/trees/redblacktree](https://github.com/emirpasic/gods/trees/redblacktree)
+使用数据结构redblacktree：[https://github.com/emirpasic/gods/tree/master/trees/redblacktree](https://github.com/emirpasic/gods/tree/master/trees/redblacktree)
 
-参看文档一致hash[http://blog.csdn.net/cywosp/article/details/23397179/](http://blog.csdn.net/cywosp/article/details/23397179/)
+参看文档一致hash：[http://blog.csdn.net/cywosp/article/details/23397179/](http://blog.csdn.net/cywosp/article/details/23397179/)
