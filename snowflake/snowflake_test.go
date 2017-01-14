@@ -14,7 +14,7 @@ func TestSnowflake(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		for i := 0; i < 10000; i++ {
+		for i := 0; i < 10000000; i++ {
 			fmt.Println(s.GetSeqID())
 		}
 

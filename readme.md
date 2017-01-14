@@ -15,3 +15,7 @@
 
 ## snowflake
   目录snowflake，提供snowflake算法工具包
+
+
+##TODO
+go thrift client 
