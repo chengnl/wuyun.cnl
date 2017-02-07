@@ -5,6 +5,7 @@ type node struct {
 	port     int
 	disabled bool
 	healthy  bool
+	priority int8
 }
 
 func NewNode() *node {
@@ -13,21 +14,27 @@ func NewNode() *node {
 func NewNode1(host string, port int) *node {
 	return &node{host: host, port: port, disabled: true, healthy: false}
 }
-func (n *node) getHost() string {
+func (n *node) GetHost() string {
 	return n.host
 }
-func (n *node) getPort() int {
+func (n *node) GetPort() int {
 	return n.port
 }
-func (n *node) getDisable() bool {
+func (n *node) GetDisable() bool {
 	return n.disabled
 }
-func (n *node) setDisable(disabled bool) {
+func (n *node) SetDisable(disabled bool) {
 	n.disabled = disabled
 }
-func (n *node) getHealthy() bool {
+func (n *node) GetHealthy() bool {
 	return n.healthy
 }
-func (n *node) setHealthy(healthy bool) {
+func (n *node) SetHealthy(healthy bool) {
 	n.healthy = healthy
+}
+func (n *node) SetPriority(priority int8) {
+	n.priority = priority
+}
+func (n *node) GetPriority() int8 {
+	return n.priority
 }

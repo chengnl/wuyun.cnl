@@ -1,6 +1,6 @@
 package thriftclient
 
 type register interface {
-	registerService(s service, node node)
-	queryService(id, version string) *service
+	RegisterNode(s *service, node *node)
+	QueryService(id, version string) *service
 }

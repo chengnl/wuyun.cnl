@@ -4,15 +4,9 @@ type registerFatcory struct {
 	r register
 }
 
-var RegisterFactory *registerFatcory
-
-func init() {
-	RegisterFactory = NewRegisterFacory()
-}
-
 func NewRegisterFacory() *registerFatcory {
-	return &registerFatcory{r: NewRegisterImpl()}
+	return &registerFatcory{r: NewRegisterSimpleImpl()}
 }
-func (factory *registerFatcory) getRegister() register {
+func (factory *registerFatcory) GetRegister() register {
 	return factory.r
 }
