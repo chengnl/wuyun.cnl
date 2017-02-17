@@ -1,6 +1,8 @@
 package thriftclient
 
 import (
+	"errors"
+	"fmt"
 	"math"
 	"sync"
 	"sync/atomic"
@@ -31,8 +33,8 @@ func (l *loadBalancerRoundRobinImpl) getNode(serviceID string, nodes []*node) (*
 		atomic.StoreInt32(counter, int32(0))
 	}
 	for step := 0; step < len(nodes); step++ {
-		node := nodes[counter%len(nodes)]
-		if !node.GetDisable && node.GetHealthy {
+		node := nodes[*counter%int32(len(nodes))]
+		if !node.GetDisable() && node.GetHealthy() {
 			return node, nil
 		}
 		fmt.Printf("node:%v 不可用/n", node)

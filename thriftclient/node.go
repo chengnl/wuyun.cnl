@@ -1,5 +1,7 @@
 package thriftclient
 
+import "fmt"
+
 type node struct {
 	host     string
 	port     int
@@ -37,4 +39,7 @@ func (n *node) SetPriority(priority int8) {
 }
 func (n *node) GetPriority() int8 {
 	return n.priority
+}
+func (n *node) getNodeKey() string {
+	return fmt.Sprintf("%s:%d", n.host, n.port)
 }

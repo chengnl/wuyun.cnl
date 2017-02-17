@@ -8,18 +8,18 @@ type service struct {
 }
 
 func NewService(ID, version string) *service {
-	return &service{ID: ID, Version: version, nodes: make([]*node,5), userPriority: 1}
+	return &service{ID: ID, Version: version, nodes: make([]*node, 5), userPriority: 1}
 }
 func (s *service) addNode(node *node) {
-	s.nodes=append(s.nodes,node)
+	s.nodes = append(s.nodes, node)
 }
-func (s *service) getNodes() *node[] {
+func (s *service) getNodes() []*node {
 	switch s.userPriority {
 	case 1:
-		nodes :=make([]*node,5)
-		for ne:=range s.nodes {
+		nodes := make([]*node, 5)
+		for _, ne := range s.nodes {
 			if ne.GetPriority() == 1 {
-				nodes=append(nodes,ne)
+				nodes = append(nodes, ne)
 			}
 		}
 		if len(nodes) == 0 {
@@ -27,10 +27,10 @@ func (s *service) getNodes() *node[] {
 		}
 		return nodes
 	case 2:
-		nodes :=make([]*node,5)
-		for ne:=range s.nodes {
+		nodes := make([]*node, 5)
+		for _, ne := range s.nodes {
 			if ne.GetPriority() == 2 {
-				nodes=append(nodes,ne)
+				nodes = append(nodes, ne)
 			}
 		}
 		return nodes
