@@ -15,3 +15,7 @@ type PoolConfig struct {
 	//是否在获取对象的时候验证对象有效性
 	IsVaildObj bool
 }
+
+func NewPoolConfig(maxIdle, minIdle, maxActive int, maxWait time.Duration, isVaildObj bool) *PoolConfig {
+	return &PoolConfig{MAX_IDLE: maxIdle, MIN_IDLE: minIdle, MAX_ACTIVE: maxActive, MAX_WAIT: maxWait, IsVaildObj: isVaildObj}
+}
