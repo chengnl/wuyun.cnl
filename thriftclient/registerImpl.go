@@ -44,12 +44,12 @@ func (r *registerImpl) checkNodeState() {
 		for {
 			//每隔1s定期检测节点状态
 			time.AfterFunc(1*time.Second, func() {
-				for _, service := range r.serviceMap {
-					id := service.ID
-					version := service.Version
-					nodes := getService(id, version)
+				// for _, service := range r.serviceMap {
+				// 	id := service.ID
+				// 	version := service.Version
+				// 	nodes := getService(id, version)
 
-				}
+				// }
 			})
 		}
 	}()

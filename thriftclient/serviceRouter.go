@@ -1,5 +1,5 @@
 package thriftclient
 
-type thriftclient interface {
+type serviceRouter interface {
 	routeService(ID, version string, timeOut int64) (*ctransport, error)
 }
