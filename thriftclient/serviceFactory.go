@@ -11,7 +11,7 @@ type ServiceFactory struct {
 func NewServiceFactory() *ServiceFactory {
 	return &ServiceFactory{router: NewServiceRouterCommonImpl()}
 }
-func (factory *ServiceFactory) createService(factoryer serviceFactoryer, ID, version string, timeOut int64) (*serviceProxy, error) {
+func (factory *ServiceFactory) CreateService(factoryer serviceFactoryer, ID, version string, timeOut int64) (*serviceProxy, error) {
 	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
 	ct, err := factory.router.routeService(ID, version, timeOut)
 	if err != nil {
