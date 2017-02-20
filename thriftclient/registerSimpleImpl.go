@@ -8,17 +8,17 @@ func NewRegisterSimpleImpl() *registerSimpleImpl {
 	registerImpl := &registerSimpleImpl{serviceMap: make(map[string]*service)}
 
 	//模拟数据
-	ID := "userService"
+	ID := "demoService"
 	version := "1.0"
 	service := NewService(ID, version)
 	registerImpl.serviceMap[ID+"_"+version] = service
 
-	node := NewNode1("192.168.1.100", 8080)
+	node := NewNode1("localhost", 8080)
 	node.SetDisable(false)
 	node.SetHealthy(true)
 	node.SetPriority(1)
 	registerImpl.RegisterNode(service, node)
-	node1 := NewNode1("192.168.1.101", 8080)
+	node1 := NewNode1("192.168.1.116", 8081)
 	node1.SetDisable(false)
 	node1.SetHealthy(true)
 	node1.SetPriority(2) //备机

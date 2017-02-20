@@ -48,6 +48,7 @@ func (provider *transportConnectionProvider) getConnection(node *node, timeOut i
 			provider.poolMap[key] = pool
 		}
 	}
+	fmt.Printf("get pool active num:=%d,idle num:=%d\n", pool.GetNumActive(), pool.GetNumIdle())
 	transport, e := pool.GetObject()
 	if e != nil {
 		return nil, err
@@ -65,6 +66,7 @@ func (provider *transportConnectionProvider) returnConnection(ct *ctransport) er
 	} else {
 		fmt.Printf("returnConnection key:=%s ,pool not exist/n", key)
 	}
+	fmt.Printf("return pool active num:=%d,idle num:=%d\n", pool.GetNumActive(), pool.GetNumIdle())
 	return nil
 }
 func (provider *transportConnectionProvider) distoryConnection(ct *ctransport) error {
