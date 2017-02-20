@@ -5,20 +5,19 @@ import (
 )
 
 type ServiceFactory struct {
-	router    serviceRouter
-	factoryer serviceFactoryer
+	router serviceRouter
 }
 
-func NewServiceFactory(factoryer serviceFactoryer) *ServiceFactory {
-	return &ServiceFactory{router: NewServiceRouterCommonImpl(), factoryer: factoryer}
+func NewServiceFactory() *ServiceFactory {
+	return &ServiceFactory{router: NewServiceRouterCommonImpl()}
 }
-func (factory *ServiceFactory) createService(ID, version string, timeOut int64) (*serviceProxy, error) {
+func (factory *ServiceFactory) createService(factoryer serviceFactoryer, ID, version string, timeOut int64) (*serviceProxy, error) {
 	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
 	ct, err := factory.router.routeService(ID, version, timeOut)
 	if err != nil {
 		return nil, err
 	}
-	client := factory.factoryer.genClient(ID, version, ct.transport, protocolFactory)
+	client := factoryer.genClient(ID, version, ct.transport, protocolFactory)
 	proxy := NewServiceProxy(client, ct, factory.router.getConnectionProvider())
 	return proxy, nil
 }
