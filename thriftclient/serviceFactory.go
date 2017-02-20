@@ -1,38 +1,24 @@
 package thriftclient
 
-import "fmt"
-
-const (
-//DEMO_SERVICE = [2]string{"demoService", "1.0"}
+import (
+	"git.apache.org/thrift.git/lib/go/thrift"
 )
 
 type serviceFactory struct {
-	router serviceRouter
+	router    serviceRouter
+	factoryer serviceFactoryer
 }
 
-func NewServiceFactory() *serviceFactory {
-	return &serviceFactory{router: NewServiceRouterCommonImpl()}
+func NewServiceFactory(factoryer serviceFactoryer) *serviceFactory {
+	return &serviceFactory{router: NewServiceRouterCommonImpl(), factoryer: factoryer}
 }
-func (factory *serviceFactory) getDemoService() (*serviceProxy, error) {
-	obj, err := factory.createService(demo.TestService, 5000)
+func (factory *serviceFactory) createService(ID, version string, timeOut int64) (*serviceProxy, error) {
+	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
+	ct, err := factory.router.routeService(ID, version, timeOut)
 	if err != nil {
 		return nil, err
 	}
-	return obj, nil
-}
-func (factory *serviceFactory) createService(obj interface{}, timeOut int64) (*serviceProxy, error) {
-	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
-	switch obj.(type) {
-	case demo.TestService:
-		var client *demo.TestServiceClient
-		ct, err := factory.router.routeService(DEMO_SERVICE[0], DEMO_SERVICE[1], timeOut)
-		if err != nil {
-			return nil, err
-		}
-		client = demo.NewTestServiceClientFactory(ct.transport, protocolFactory)
-		proxy := NewServiceProxy(ct, factory.router)
-		return proxy, nil
-	default:
-		return nil, fmt.Errorf("serviceName=%s not found\n", serviceName)
-	}
+	client := factory.factoryer.genClient(ID, version, ct.transport, protocolFactory)
+	proxy := NewServiceProxy(client, ct, factory.router.getConnectionProvider())
+	return proxy, nil
 }

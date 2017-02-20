@@ -44,3 +44,7 @@ func (s *serviceRouterCommonImpl) routeService(ID, version string, timeOut int64
 	ct := NewCTransport(n, transport)
 	return ct, nil
 }
+
+func (s *serviceRouterCommonImpl) getConnectionProvider() connectionProvider {
+	return s.provider
+}
