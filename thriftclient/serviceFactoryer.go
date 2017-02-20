@@ -5,6 +5,6 @@ import (
 )
 
 type serviceFactoryer interface {
-	createService(ID, version string, timeOut int64) (*ServiceProxy, error)
-	genClient(ID, version string, t thrift.TTransport, f thrift.TProtocolFactory) interface{}
+	CreateService(ID, version string, timeOut int64) (*ServiceProxy, error)
+	GenClient(ID, version string, t thrift.TTransport, f thrift.TProtocolFactory) interface{}
 }

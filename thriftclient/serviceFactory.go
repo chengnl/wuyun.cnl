@@ -17,7 +17,7 @@ func (factory *ServiceFactory) CreateService(factoryer serviceFactoryer, ID, ver
 	if err != nil {
 		return nil, err
 	}
-	client := factoryer.genClient(ID, version, ct.transport, protocolFactory)
+	client := factoryer.GenClient(ID, version, ct.transport, protocolFactory)
 	proxy := NewServiceProxy(client, ct, factory.router.getConnectionProvider())
 	return proxy, nil
 }
