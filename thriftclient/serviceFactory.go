@@ -18,16 +18,7 @@ func NewServiceFactory() *ServiceFactory {
 	})
 	return sf
 }
-func (factory *ServiceFactory) CreateService(factoryer serviceFactoryer, ID, version string, timeOut int64) *ServiceProxy {
-	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
-	ct, err := factory.router.routeService(ID, version, timeOut)
-	if err != nil {
-		return nil
-	}
-	client := factoryer.GenClient(ID, version, ct.transport, protocolFactory)
-	if client == nil {
-		return nil
-	}
-	proxy := NewServiceProxy(client, ct, factory.router.getConnectionProvider())
+func (factory *ServiceFactory) CreateService(ID, version string, timeOut int64, genClient func(thrift.TTransport, thrift.TProtocolFactory) interface{}) *ServiceProxy {
+	proxy := NewServiceProxy(ID, version, timeOut, genClient, factory.router)
 	return proxy
 }

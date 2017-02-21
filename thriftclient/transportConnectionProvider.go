@@ -23,7 +23,7 @@ type transportConnectionProvider struct {
 
 func NewTransportConnectionProvider() *transportConnectionProvider {
 	return &transportConnectionProvider{poolMap: make(map[string]pool.ObjectPooler), mux: new(sync.Mutex),
-		maxIdle: 50, minIdle: 5, maxActive: 100, maxWait: 10 * time.Millisecond, isVaildObj: false}
+		maxIdle: 50, minIdle: 5, maxActive: 100, maxWait: 500 * time.Millisecond, isVaildObj: false}
 }
 func (provider *transportConnectionProvider) setParams(maxIdle, minIdle, maxActive int, maxWait time.Duration) {
 	provider.maxActive = maxActive
@@ -51,7 +51,7 @@ func (provider *transportConnectionProvider) getConnection(node *node, timeOut i
 	fmt.Printf("get pool active num:=%d,idle num:=%d\n", pool.GetNumActive(), pool.GetNumIdle())
 	transport, e := pool.GetObject()
 	if e != nil {
-		return nil, err
+		return nil, e
 	}
 	return transport.(thrift.TTransport), nil
 }

@@ -1,36 +1,74 @@
 package thriftclient
 
 import (
+	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
+	"reflect"
 )
 
 type ServiceProxy struct {
-	client   interface{}
-	ct       *ctransport
-	provider connectionProvider
+	ID, version     string
+	timeOut         int64
+	genClient       func(thrift.TTransport, thrift.TProtocolFactory) interface{}
+	router          serviceRouter
+	protocolFactory *thrift.TBinaryProtocolFactory
+	ct              *ctransport
 }
 
-func NewServiceProxy(client interface{}, ct *ctransport, provider connectionProvider) *ServiceProxy {
-	return &ServiceProxy{client: client, ct: ct, provider: provider}
-}
-func (s *ServiceProxy) ReturnConnection() error {
-	return s.provider.returnConnection(s.ct)
-}
-func (s *ServiceProxy) DistoryConnection() error {
-	return s.provider.distoryConnection(s.ct)
-}
-func (s *ServiceProxy) ClearConnection() error {
-	return s.provider.clearConnection(s.ct.n)
-}
-func (s *ServiceProxy) GetClient() interface{} {
-	return s.client
+func NewServiceProxy(ID, version string, timeOut int64, genClient func(thrift.TTransport, thrift.TProtocolFactory) interface{}, router serviceRouter) *ServiceProxy {
+	return &ServiceProxy{ID: ID, version: version, timeOut: timeOut, genClient: genClient, router: router,
+		protocolFactory: thrift.NewTBinaryProtocolFactoryDefault()}
 }
 
-//先简单处理下错误，后续增加节点检测机制
-func (s *ServiceProxy) HandlerError(err error) {
-	if _, ok := err.(thrift.TTransportException); ok {
-		s.DistoryConnection()
-	} else {
-		s.ReturnConnection()
+func (s *ServiceProxy) Call(methodName string, params ...interface{}) (result interface{}, err error) {
+	ct, err := s.router.routeService(s.ID, s.version, s.timeOut)
+	if err != nil {
+		return nil, err
 	}
+	defer func() {
+		if p := recover(); p != nil {
+			err = fmt.Errorf("internal error:%v \n", p)
+			s.router.returnConnection(ct)
+		}
+	}()
+	s.ct = ct
+	client := s.genClient(ct.transport, s.protocolFactory)
+	v := reflect.ValueOf(client)
+	f := v.MethodByName(methodName)
+	pl := len(params)
+	if pl != f.Type().NumIn() {
+		s.router.returnConnection(ct)
+		return nil, fmt.Errorf("params is not match method=%s \n", methodName)
+	}
+	var in []reflect.Value
+	if pl > 0 {
+		in = make([]reflect.Value, pl)
+		for k, param := range params {
+			in[k] = reflect.ValueOf(param)
+		}
+	}
+	out := f.Call(in)
+	ol := len(out)
+	switch ol {
+	case 1:
+		if out[0].Interface() != nil {
+			err = out[0].Interface().(error)
+		}
+		break
+	case 2:
+		result = out[0].Interface()
+		if out[1].Interface() != nil {
+			err = out[1].Interface().(error)
+		}
+		break
+	default:
+		s.router.returnConnection(ct)
+		return nil, fmt.Errorf("call result is not match method=%s \n", methodName)
+	}
+	if e, ok := err.(thrift.TTransportException); ok {
+		s.router.errorHandler(s.ID, s.version, e, ct)
+	} else {
+		s.router.returnConnection(ct)
+	}
+	return
 }
