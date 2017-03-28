@@ -1,7 +1,6 @@
 package thriftclient
 
 import (
-	"errors"
 	"fmt"
 	"math"
 	"sync"
@@ -39,5 +38,5 @@ func (l *loadBalancerRoundRobinImpl) getNode(serviceID string, nodes []*node) (*
 		}
 		fmt.Printf("node:%v 不可用/n", node)
 	}
-	return nil, errors.New("none available node for service:" + serviceID)
+	return nil, NewNodeException(NO_AVAILABLE_NODE, fmt.Sprintf("none available node for service:%s", serviceID))
 }

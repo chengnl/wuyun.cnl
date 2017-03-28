@@ -35,10 +35,13 @@ func (s *ServiceProxy) Call(methodName string, params ...interface{}) (result in
 	client := s.genClient(ct.transport, s.protocolFactory)
 	v := reflect.ValueOf(client)
 	f := v.MethodByName(methodName)
+	if f.IsValid() {
+		return nil, NewMethodException(NO_SUCH_METHOD, fmt.Sprintf("methodName=%s  is not valid\n", methodName))
+	}
 	pl := len(params)
 	if pl != f.Type().NumIn() {
 		s.router.returnConnection(ct)
-		return nil, fmt.Errorf("params is not match method=%s \n", methodName)
+		return nil, NewMethodException(NO_MACH_PARAMS, fmt.Sprintf("params is not match method=%s \n", methodName))
 	}
 	var in []reflect.Value
 	if pl > 0 {
@@ -63,7 +66,7 @@ func (s *ServiceProxy) Call(methodName string, params ...interface{}) (result in
 		break
 	default:
 		s.router.returnConnection(ct)
-		return nil, fmt.Errorf("call result is not match method=%s \n", methodName)
+		return nil, NewMethodException(NO_MACH_RESULT, fmt.Sprintf("call result is not match method=%s \n", methodName))
 	}
 	if e, ok := err.(thrift.TTransportException); ok {
 		s.router.errorHandler(s.ID, s.version, e, ct)

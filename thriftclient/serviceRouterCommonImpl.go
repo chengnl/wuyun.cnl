@@ -21,7 +21,7 @@ func (s *serviceRouterCommonImpl) routeService(ID, version string, timeOut int64
 	nodes := s.nl.load(ID, version)
 	fmt.Printf("service size := %d\n", len(nodes))
 	if len(nodes) == 0 {
-		return nil, fmt.Errorf("none  node for ID:=%s,version:=%s\n", ID, version)
+		return nil, NewNodeException(NO_NODE_SERVICE, fmt.Sprintf("none  node for ID:=%s,version:=%s\n", ID, version))
 	}
 	var n *node
 	var err error
